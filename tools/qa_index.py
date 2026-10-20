@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from build import BOOKS, NAME, ORDER, RELEASE  # noqa: E402
+from build import BOOKS, ORDER, RELEASE, SLUG  # noqa: E402
 
 PIDS = r"[A-Z]{1,4}\d{0,2}[A-Z]?-(?:\d{2}|C\d)"  # 题号，如 L8-05、K31-12
 PID = re.compile(rf"^\*\*({PIDS})\*\*", re.M)
@@ -99,7 +99,7 @@ def put(table: dict, key: str, value, what: str) -> None:
 def build_book(book: str, items: dict, units: dict, codes_seen: dict) -> dict:
     outline = json.loads((BOOKS / book / "outline.json").read_text(encoding="utf-8"))
     codes = [u["code"] for u in outline["units"]]
-    pdf = RELEASE / f"{book}_{NAME}.pdf"
+    pdf = RELEASE / f"{book}_{SLUG}.pdf"
     if not pdf.exists():
         raise SystemExit(f"缺少 {pdf}，先运行 python tools/build.py {book}")
     mine: dict[str, dict] = {}

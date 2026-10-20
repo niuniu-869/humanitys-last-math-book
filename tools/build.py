@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """把一册排成可双面打印的 A4 PDF。
 
-    python tools/build.py P                  # 产物：release/P_人类最后一本数理基础书.pdf
+    python tools/build.py P                  # 产物：release/P_humanitys-last-math-book.pdf
     python tools/build.py all                # 全部分册，按书序逐册排
     python tools/build.py P --units P1,P2    # 只排其中几章（试排用）
     python tools/build.py P --tex-only       # 只生成 LaTeX 源 books/P/_build/P.tex，不编译
@@ -23,7 +23,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-NAME = "人类最后一本数理基础书"  # 书名：出现在封面和 PDF 文件名里（页眉印的是册名）
+NAME = "人类最后一本数理基础书"  # 书名，印在封面上（页眉印的是册名）
+SLUG = "humanitys-last-math-book"  # PDF 文件名用的英文名：GitHub Releases 会删掉附件文件名里的中文
 ROOT = Path(__file__).resolve().parents[1]
 BOOKS = ROOT / "books"
 RELEASE = ROOT / "release"
@@ -263,7 +264,7 @@ def build(book: str, only: list[str] | None = None, tex_only: bool = False) -> b
     if not pdf:
         return False
     RELEASE.mkdir(exist_ok=True)
-    out = RELEASE / f"{book}_{NAME}.pdf"
+    out = RELEASE / f"{book}_{SLUG}.pdf"
     pdf.replace(out)
     print(f"[{book}] {out}")
     return True

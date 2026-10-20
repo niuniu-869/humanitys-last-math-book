@@ -35,7 +35,7 @@ dsh plugin --profile tutor add https://github.com/niuniu-869/humanitys-last-math
 
 第 2 步不能省。它做的是从 dsh 自带的 web 模板新建一个叫 `tutor` 的 profile，这样建出来的 profile 已经带着网页界面。要是跳过这一步，直接对不存在的 profile 执行第 3 步，dsh 也会新建一个 profile，但里面没有网页界面，答疑老师起不来，这一点是实测过的。
 
-第 3 步把插件加进这个 profile。这一步会自动把插件写进 profile 的 `bundles`，不用手动改任何文件；以后卸载时，也会自动从 `bundles` 里删掉。现在用本地 tgz 安装是实测过的，Release 下载地址等仓库公开后再补测。
+第 3 步把插件加进这个 profile。这一步会自动把插件写进 profile 的 `bundles`，不用手动改任何文件；以后卸载时，也会自动从 `bundles` 里删掉。用 Release 下载地址装和用本地 tgz 装，两种都实测过。
 
 另外，想要鲸鱼娘女仆皮肤的话，可以在同一个 profile 里装社区的 maid-atelier 皮肤，包名是 `@smalltailqwq/dsh-client-ui-skin-maid-atelier`。皮肤是社区作品，不随插件分发。
 
@@ -47,7 +47,7 @@ dsh plugin --profile tutor add https://github.com/niuniu-869/humanitys-last-math
 
 ### 配置和启动
 
-第 4 步是配置。在 profile 的 `cordis.patch.yml` 里加上插件这一段：
+第 4 步是配置。新建的 profile 里，`cordis.patch.yml` 只有一行 `[]`，要把这一行换成下面这段，直接接在后面写会解析失败：
 
 ```yaml
 - id: hlmb-tutor
@@ -65,7 +65,7 @@ dsh plugin --profile tutor add https://github.com/niuniu-869/humanitys-last-math
 dsh --profile tutor
 ```
 
-第一次启动会让你选一个工作区目录。答疑不会读写这个目录里的文件，所以选一个空的或者平时不用的目录就行，不用把教材或者代码放进去。
+第一次启动要先登录 DeepSeek 账号或者添加 API Key，然后选一个工作区目录。答疑不会读写这个目录里的文件，所以选一个空的或者平时不用的目录就行，不用把教材或者代码放进去。
 
 ## 系统要求和 manim 环境
 

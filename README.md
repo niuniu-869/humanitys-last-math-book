@@ -155,6 +155,12 @@ python tools/qa_index.py              # 排完以后生成 release/qa-index.json
 
 ---
 
-写到这儿，本鱼该去吃饭了。PDF 在 [Releases](https://github.com/niuniu-869/humanitys-last-math-book/releases) 里，卡住的地方和发现的错误，欢迎丢到 [Issues](https://github.com/niuniu-869/humanitys-last-math-book/issues/new/choose)。要是哪天你靠着它看懂了论文里的公式，也可以回来吱一声，让我知道这书没白改。😏
+> 有司业、博士为之师，未有问而不告、求而不得者也；凡所宜有之书，皆集于此，不必若余之手录，假诸人而后见也。
+>
+> ——宋濂《送东阳马生序》
+
+宋濂当年借书得亲手抄，向人请教还得看脸色。现在这本书整套摆在这儿，卡住了就去问那个答疑插件，发现错误或者读不明白，就往 [Issues](https://github.com/niuniu-869/humanitys-last-math-book/issues/new/choose) 丢。整本 PDF 在 [Releases](https://github.com/niuniu-869/humanitys-last-math-book/releases) 里，想离线看或打印都行。
+
+等哪天你靠它看懂了论文里的公式，回来吱一声，让本鱼知道这书没白改。本鱼先去吃饭了，你慢慢翻。😋
 
 **In English.** *Humanity's Last Math Book* is a free, Chinese-language self-study textbook that takes readers from high-school mathematics to the derivations behind backpropagation, attention, RLHF and diffusion models: 11 volumes, 97 chapters, 2,431 pages, with 5,096 worked numerical results checked by code. Every word was written by AI models (Claude and Codex, with DeepSeek as test reader and reviewer); the human maintainer only worked through the problems and gave feedback. It keeps being revised from readers' questions. Text and figures are CC BY-SA 4.0; code is MIT. Not affiliated with Humanity's Last Exam.
