@@ -1,8 +1,10 @@
-dsh-plugin-humanitys-last-math-book — 第三方美术署名 / Third-party artwork notice
-==================================================================
+dsh-plugin-humanitys-last-math-book — 第三方署名 / Third-party notices
+=====================================================================
 
-代码以 MIT 授权（见 LICENSE）。美术素材不在 MIT 范围内，单独说明如下。
-Code is MIT-licensed (see LICENSE). The artwork below is not covered by MIT.
+代码以 MIT 授权（见 LICENSE）。其中构建配置改编自第三方 MIT 代码，美术素材
+不在 MIT 范围内，分别说明如下。
+Code is MIT-licensed (see LICENSE). The build preset is adapted from
+third-party MIT code, and the artwork is not covered by MIT; see below.
 
 art/fish-avatar.webp（答疑老师「大肥鱼」头像）
 --------------------------------------------
@@ -27,3 +29,50 @@ Artwork copyright remains with the respective authors above, including
 embedded and transformed copies.
 
 CC BY-NC-SA 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+
+build/tsdown.client.ts、build/web-platform.ts（构建配置 / build preset）
+----------------------------------------------------------------------
+
+改编自 Small-tailqwq 的 dsh-deep-whale（maid-atelier/build/），其中
+asyncChunkRequirePlugin 来自 DeepSeek 的 deepseek-harness
+（packages/client/tsdown.client.ts）。两者都按 MIT 授权，许可原文如下。
+Adapted from Small-tailqwq's dsh-deep-whale (maid-atelier/build/);
+asyncChunkRequirePlugin is ported from DeepSeek's deepseek-harness
+(packages/client/tsdown.client.ts). Both are MIT-licensed:
+
+  https://github.com/Small-tailqwq/dsh-deep-whale
+  Copyright (c) 2026 Small-tailqwq
+
+  https://github.com/deepseek-ai/deepseek-harness
+  Copyright (c) 2026 DeepSeek
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+
+推荐皮肤 maid-atelier（不随插件分发 / not bundled）
+--------------------------------------------------
+
+README 推荐的女仆皮肤 @smalltailqwq/dsh-client-ui-skin-maid-atelier 由
+Small-tailqwq 制作（https://github.com/Small-tailqwq/dsh-deep-whale）。本插件
+不含它的美术；它的美术按 CC BY-NC-SA 4.0 授权、不许商用，署名见皮肤自带的
+NOTICE 和 LICENSE-ARTWORK。
+The recommended maid-atelier skin is made by Small-tailqwq and is not bundled.
+Its artwork is CC BY-NC-SA 4.0 (non-commercial); see the skin's own NOTICE and
+LICENSE-ARTWORK.

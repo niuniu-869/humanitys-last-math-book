@@ -2,6 +2,9 @@
  * Shared browser platform modules. Seeding, bundling externals, and Vite
  * aliases consume this list so their module identities cannot drift.
  * @module @deepseek-ai/dsh-client-web/src/platform
+ *
+ * Adapted from Small-tailqwq/dsh-deep-whale (maid-atelier/build/web-platform.ts,
+ * MIT, Copyright (c) 2026 Small-tailqwq). License text in ../NOTICE.
  */
 
 /** The module specifiers the shell shares into the frozen module table. */

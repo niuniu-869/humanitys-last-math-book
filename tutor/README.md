@@ -37,7 +37,7 @@ dsh plugin --profile tutor add https://github.com/niuniu-869/humanitys-last-math
 
 第 3 步把插件加进这个 profile。这一步会自动把插件写进 profile 的 `bundles`，不用手动改任何文件；以后卸载时，也会自动从 `bundles` 里删掉。用 Release 下载地址装和用本地 tgz 装，两种都实测过。
 
-另外，想要鲸鱼娘女仆皮肤的话，可以在同一个 profile 里装社区的 maid-atelier 皮肤，包名是 `@smalltailqwq/dsh-client-ui-skin-maid-atelier`。皮肤是社区作品，不随插件分发。
+另外，想要鲸鱼娘女仆皮肤的话，可以在同一个 profile 里装社区的 maid-atelier 皮肤，包名是 `@smalltailqwq/dsh-client-ui-skin-maid-atelier`。皮肤是 Small-tailqwq 的作品，出自 [dsh-deep-whale](https://github.com/Small-tailqwq/dsh-deep-whale)，不随插件分发；它的美术按 CC BY-NC-SA 4.0 授权，不能商用。
 
 ### 教材数据怎么准备
 
@@ -107,6 +107,8 @@ rm -rf lib && pnpm build && pnpm pack   # 构建不会清空 lib/，打包前先
 ## 授权
 
 代码用 MIT 授权，许可证在 `tutor/LICENSE`，版权人是 niuniu-869 and contributors。
+
+构建配置 `build/tsdown.client.ts` 和 `build/web-platform.ts` 改编自 Small-tailqwq 的 [dsh-deep-whale](https://github.com/Small-tailqwq/dsh-deep-whale)，其中处理异步分包的那段插件来自 DeepSeek 的 [deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)。两者都是 MIT 授权，原版权声明和许可原文保留在 `tutor/NOTICE` 里。
 
 头像 `art/fish-avatar.webp` 是鲸鱼娘形象的演绎作品，按 CC BY-NC-SA 4.0 授权，不在 MIT 范围内。它的创作链和署名是：上善无形的原作角色 → ZipZipPipe 加入 DeepSeek 元素的设计 → 本插件以此为参考图做图生图，再裁成 256px 头像。细节写在 `tutor/NOTICE` 里。
 

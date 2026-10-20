@@ -10,6 +10,11 @@
  * plugin-owned tags on unload). The virtual loader registers each real
  * stylesheet as a watch dependency. The platform module list mirrors the
  * shell's seed table in `./web-platform.ts`.
+ *
+ * Adapted from Small-tailqwq/dsh-deep-whale (maid-atelier/build/tsdown.client.ts,
+ * MIT, Copyright (c) 2026 Small-tailqwq). asyncChunkRequirePlugin is ported
+ * from deepseek-ai/deepseek-harness (packages/client/tsdown.client.ts, MIT,
+ * Copyright (c) 2026 DeepSeek). License text in ../NOTICE.
  */
 import { readFile, stat, utimes } from 'node:fs/promises'
 import { existsSync } from 'node:fs'

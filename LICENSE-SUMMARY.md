@@ -17,6 +17,7 @@
 
 - **README 开头的三张梗图**：网络梗图，2026 年 9 月流行，作者不详，转自微博「蚁工厂」2026-09-21 的合订本。图中女仆鲸鱼娘的原设计来自画师上善无形（角色「溟月」，以 CC BY-NC-SA 4.0 开放二创）和 B 站 UP 主 ZipZipPipe（女仆版，禁止商用）。本仓库只做非商业引用，这三张图的权利归原作者，不随本仓库的 CC BY-SA 4.0 授权给你。转载请遵守原作者的条件，不要商用。作者如不同意引用，请联系我们删除。
 - **答疑插件的大肥鱼头像**（`tutor/art/fish-avatar.webp`）：DeepSeek 鲸鱼娘形象的演绎作品，以 CC BY-NC-SA 4.0 授权，不在 MIT 范围内。创作链是：上善无形的原作角色 → ZipZipPipe 加入 DeepSeek 元素的鲸鱼娘设计 → 本插件以此为参考图做图生图（2026-10），再裁切成 256px 头像。使用时须保留这条完整署名，只能非商业使用，再演绎须以相同方式共享；美术版权归以上各作者。详见 `tutor/NOTICE`。
+- **答疑插件的构建配置**（`tutor/build/tsdown.client.ts`、`tutor/build/web-platform.ts`）：改编自 Small-tailqwq 的 [dsh-deep-whale](https://github.com/Small-tailqwq/dsh-deep-whale)（MIT，Copyright (c) 2026 Small-tailqwq），其中 asyncChunkRequirePlugin 来自 DeepSeek 的 [deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)（MIT，Copyright (c) 2026 DeepSeek）。再分发时须保留这两条版权声明，原文见 `tutor/NOTICE`。插件推荐的 maid-atelier 皮肤不在本仓库，它的美术按 CC BY-NC-SA 4.0 授权、不能商用。
 - **字体**：本仓库不包含字体文件。排版用到的 Noto CJK、STIX Two、TeX Gyre Heros、DejaVu Sans 各自使用开源字体许可，需要另外安装。
 - **商标**：书中提到的 GPT、ChatGPT、Llama、Qwen、DeepSeek 等名称属于各自的权利人，只用于说明事实，不表示与这些机构有任何关联。书名借用了 AI 评测 Humanity's Last Exam（Center for AI Safety 与 Scale AI）的句式，本书与它及其出品方同样没有关联。
 - **AI 写成的内容**：本书的文字、题目、代码和配图全部由 AI 模型写成，人类作者只做题、提意见（见 README）。在一些法域，完全由模型生成的内容是否受著作权保护尚无定论；上述许可适用于本书中依法享有权利的全部内容。

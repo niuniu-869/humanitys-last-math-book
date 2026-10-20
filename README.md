@@ -147,6 +147,8 @@ python tools/qa_index.py              # 排完以后生成 release/qa-index.json
 
 开头三张梗图的作者没有找到。如果你是作者，欢迎联系我们补上署名。这份 README 的口吻借用了 [dafeiyu-persona](https://github.com/ERUIHNIYHBKBNF/dafeiyu-persona) 的大肥鱼人设，这里一并谢过。
 
+答疑插件的构建配置改编自 Small-tailqwq 的 [dsh-deep-whale](https://github.com/Small-tailqwq/dsh-deep-whale)，插件说明里推荐的 maid-atelier 女仆皮肤也出自这个仓库；其中一段构建插件来自 DeepSeek 的 [deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)。署名和许可见 `tutor/NOTICE`。
+
 ## 许可
 
 正文和插图采用 [CC BY-SA 4.0](LICENSE)，代码采用 [MIT](LICENSE-CODE)，版权人是 niuniu-869 and contributors。两种许可的边界和其他说明，见 [LICENSE-SUMMARY.md](LICENSE-SUMMARY.md)。
