@@ -1,0 +1,27 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, ax = new_fig(15, 8)
+fig.subplots_adjust(left=0.1, right=0.66, bottom=0.16, top=0.94)
+y = np.linspace(0, 1, 401)
+cut = 0.25 + y
+area = 0.25 + 0.5
+assert area == 0.75 and np.isclose((0.25 + 0.5)/area, 1)
+ax.fill_between(y, 0, cut, color=C.LIGHT)
+ax.plot(y, cut, color=C.INK, ls='-')
+ax.plot(y, cut/area, color=C.INK, ls='--')
+label(ax, '$0.25+y$', (0.9, 0.8), ha='right')
+label(ax, '面积为 1', (0.57, (0.25+0.57)/area), (-12, 20), ha='center')
+label(ax, r'$f_X(x_0)=0.75$', (0.55, 0.35), ha='center')
+ax.set(xlim=(0, 1.12), ylim=(0, 1.9), xlabel='$y$', ylabel='高度')
+ax.set_xticks([0, 1])
+ax.set_yticks([0, 1])
+small = fig.add_axes([0.77, 0.26, 0.21, 0.5])
+small.fill([0, 1, 1, 0], [0, 0, 1, 1], color=C.LIGHT)
+small.plot([0, 1, 1, 0, 0], [0, 0, 1, 1, 0], color=C.INK, lw=1)
+small.plot([0.25, 0.25], [0, 1], color=C.INK, lw=2.8)
+label(small, '切口', (0.25, 0.7), (8, 0))
+small.set(xlim=(0, 1.05), ylim=(0, 1.08), aspect='equal', xlabel='$x$', ylabel='$y$')
+small.set_xticks([0.25, 1], ['0.25', '1'])
+small.set_yticks([0, 1])
+save(fig, 'P6-n2')

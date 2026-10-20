@@ -1,0 +1,21 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, ax = new_fig(11.5, 7.5)
+x = np.linspace(0, 1, 200)
+ax.plot(x, np.exp(x), color=C.INK, lw=2.0, label=r"真解 $y=e^x$（实线）")
+xa = np.arange(3) * 0.5; ya = 1.5 ** np.arange(3)
+ax.plot(xa, ya, color=C.INK, lw=1.4, ls="--", marker="o", mfc=C.PAPER, mec=C.INK, ms=6, label=r"$h=0.5$（虚线，空心圆）")
+xb = np.arange(5) * 0.25; yb = 1.25 ** np.arange(5)
+ax.plot(xb, yb, color=C.INK, lw=1.4, ls=":", marker="s", ms=5, label=r"$h=0.25$（点线，方块）")
+label(ax, r"$e\approx2.718$", (1, np.e), offset=(6, -3))
+label(ax, f"{yb[-1]:.3f}", (1, yb[-1]), offset=(6, -3))
+label(ax, "2.25", (1, 2.25), offset=(6, -5))
+ax.legend(loc="upper left", frameon=False, fontsize=9)
+ax.set_xlim(0, 1.22); ax.set_ylim(0.9, 2.85)
+ax.set_xticks([0, 0.25, 0.5, 0.75, 1])
+ax.set_xlabel("$x$"); ax.set_ylabel("$y$")
+assert ya[-1] == 2.25 and yb[-1] == 2.44140625
+assert np.all(np.interp(x, xa, ya) <= np.exp(x) + 1e-12)
+assert np.all(np.interp(x, xb, yb) <= np.exp(x) + 1e-12)
+save(fig, "C17-n2")

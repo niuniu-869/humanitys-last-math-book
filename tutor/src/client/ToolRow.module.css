@@ -1,0 +1,231 @@
+/* 与 dsh 工具行（ui-tool 的 ToolRow + ui-primitives 的 DisclosureRow）同一套尺寸和颜色：24px 一行，图标 16px 槽位。 */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: calc(24px + var(--dsh-content-font-delta, 0px));
+  color: var(--dsw-alias-label-tertiary);
+  font-size: var(--dsh-content-font-size-secondary, 13px);
+  line-height: calc(24px + var(--dsh-content-font-delta, 0px));
+  overflow: hidden;
+}
+
+.row[data-expandable] {
+  cursor: pointer;
+}
+
+.row[data-expandable]:hover,
+.row[aria-expanded='true'] {
+  color: var(--dsw-alias-label-secondary);
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: 1px;
+  border-radius: 4px;
+}
+
+.leading {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(16px + var(--dsh-content-font-delta, 0px));
+  height: calc(16px + var(--dsh-content-font-delta, 0px));
+  margin-right: 6px;
+}
+
+.leading > svg {
+  transition: opacity 0.1s ease;
+}
+
+.chevron {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  opacity: 0;
+}
+
+.row[data-expandable]:hover .idle,
+.row[aria-expanded='true'] .idle {
+  opacity: 0;
+}
+
+.row[data-expandable]:hover .chevron,
+.row[aria-expanded='true'] .chevron {
+  opacity: 1;
+}
+
+.title {
+  flex: none;
+  color: inherit;
+}
+
+.row[data-state='running'] .title {
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row[data-state='running'] .title { animation: none; }
+}
+
+.sep {
+  flex: none;
+  width: 2px;
+  height: 2px;
+  margin: 0 8px;
+  border-radius: 1px;
+  background: var(--dsw-alias-label-caption);
+}
+
+.summary {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 可点的摘要（翻到教材某页）：沿用 dsh 文件链接的虚线下划线。 */
+.link {
+  flex: 0 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  text-decoration: underline 1px dotted;
+  text-underline-offset: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: var(--dsw-alias-label-primary);
+}
+
+.suffix {
+  flex: none;
+  margin-left: 6px;
+  white-space: nowrap;
+  font-family: var(--ds-font-family-code);
+  font-size: calc(var(--dsh-content-font-size-secondary, 13px) - 1px);
+}
+
+.root[data-state='error'] .summary,
+.root[data-state='error'] .suffix {
+  color: var(--dsw-alias-state-error-primary);
+}
+
+/* 展开后的输入/输出卡，同 dsh 的 ioCard。 */
+.card {
+  display: flex;
+  flex-direction: column;
+  margin: 4px 0 4px 4px;
+  border: 0.5px solid var(--dsw-alias-border-l1);
+  border-radius: var(--dsw-radius-lg, 10px);
+  background: var(--dsw-alias-markdown-code-block);
+  font: var(--dsw-font-markdown-code-block-small);
+}
+
+.section {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: baseline;
+  column-gap: 14px;
+  max-height: 260px;
+  padding: 12px 16px;
+  overflow-y: auto;
+}
+
+.label {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  color: var(--dsw-alias-label-caption);
+}
+
+.text {
+  min-width: 0;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font: inherit;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.text[data-error] {
+  color: var(--dsw-alias-state-error-primary);
+}
+
+.divider {
+  flex: none;
+  height: 0.5px;
+  background: var(--dsw-alias-border-l2);
+}
+
+/* 正文里的教材引用（题号、页码），点了翻到那一页。 */
+.ref {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--dsw-alias-state-business-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.ref:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 用户气泡里的教材引用芯片，同 dsh 的引用芯片。 */
+.refChip {
+  display: inline;
+  max-width: 100%;
+  margin: 0 2px;
+  padding: 0;
+  font: inherit;
+  font-weight: 500;
+  color: var(--dsw-alias-state-business-primary);
+  white-space: inherit;
+  overflow-wrap: anywhere;
+  text-align: inherit;
+  background: none;
+  border: none;
+}
+
+button.refChip {
+  cursor: pointer;
+}
+
+button.refChip:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.refIcon {
+  width: 1em;
+  height: 1em;
+  margin-right: 3px;
+  vertical-align: -0.125em;
+}

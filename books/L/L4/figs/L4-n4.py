@@ -1,0 +1,23 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, axs = new_fig(18, 7, ncols=3)
+x=np.linspace(-1,4,400)
+for ax in axs:
+    ax.set_xlim(-1,4); ax.set_ylim(-2,4); ax.set_aspect('equal', adjustable='box')
+    ax.grid(True,color=C.LIGHT,lw=.6)
+    ax.set_xlabel('x'); ax.set_ylabel('y')
+ax=axs[0]; ax.set_title('相交：唯一解')
+ax.plot(x,2*x-1,ls='-',color=C.BLUE); ax.plot(x,5-x,ls='--',color=C.RED)
+label(ax,'$2x-y=1$',(2.4,3.8)); label(ax,'$x+y=5$',(2.7,2.1)); dot(ax,(2,3),'$(2,3)$',offset=(5,5))
+ax.text(.5,-.25,'第二行 $(0,\\frac{3}{2}\\mid\\frac{9}{2})$：有主元',transform=ax.transAxes,ha='center',va='top',fontsize=8)
+ax=axs[1]; ax.set_title('平行：无解')
+ax.plot(x,1-x,ls='-',color=C.BLUE); ax.plot(x,3-x,ls='--',color=C.RED)
+label(ax,'$x+y=1$',(2.4,-1.4)); label(ax,'$x+y=3$',(2.4,.8))
+ax.text(.5,-.25,'第二行 $(0,0\\mid2)$：$0=2$',transform=ax.transAxes,ha='center',va='top',fontsize=8)
+ax=axs[2]; ax.set_title('重合：无穷多解')
+ax.plot(x,1-x,ls='-',color=C.BLUE,lw=2.4); ax.plot(x,1-x,ls='--',color=C.RED,lw=1.1)
+label(ax,'$x+y=1$',(2.1,-1.15)); label(ax,'$2x+2y=2$',(1.5,-.55))
+ax.text(.5,-.25,'第二行 $(0,0\\mid0)$：$y$ 自由',transform=ax.transAxes,ha='center',va='top',fontsize=8)
+fig.tight_layout(h_pad=2.2,w_pad=1.5)
+save(fig, "L4-n4")

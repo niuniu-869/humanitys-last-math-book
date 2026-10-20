@@ -1,0 +1,234 @@
+/* 右侧「教材」面板：上面一条导航，中间连续滚动的书页，下面是当前页的题目和「问这一页」。 */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+  font-size: 13px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 0.5px solid var(--dsw-alias-border-l2);
+}
+
+.select {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 28px;
+  padding: 0 8px;
+  font: inherit;
+  color: inherit;
+  text-overflow: ellipsis;
+  background: transparent;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pager {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--dsw-alias-label-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--dsw-alias-label-secondary);
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.iconButton:hover:not(:disabled) {
+  color: var(--dsw-alias-label-primary);
+  background: var(--dsw-alias-interactive-bg-hover-solid);
+}
+
+.iconButton:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.pageInput {
+  width: 4ch;
+  height: 24px;
+  padding: 0 4px;
+  font: inherit;
+  text-align: right;
+  color: var(--dsw-alias-label-primary);
+  background: transparent;
+  border: 0.5px solid transparent;
+  border-radius: 4px;
+}
+
+.pageInput:hover,
+.pageInput:focus {
+  border-color: var(--dsw-alias-border-l3);
+  outline: none;
+}
+
+.scroller {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--dsw-alias-markdown-code-block);
+}
+
+.page {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 0 0.5px var(--dsw-alias-border-l2), 0 1px 3px rgb(0 0 0 / 8%);
+}
+
+:global(body[data-ds-dark-theme]) .page {
+  filter: brightness(0.88);
+}
+
+.page canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pageNo {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  font-size: 11px;
+  color: #9aa0a6;
+  pointer-events: none;
+}
+
+.notice {
+  margin: auto;
+  padding: 24px;
+  max-width: 280px;
+  text-align: center;
+  line-height: 1.6;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.textButton {
+  margin-top: 8px;
+  padding: 4px 10px;
+  font: inherit;
+  color: var(--dsw-alias-state-business-primary);
+  background: none;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 底栏：当前页的题目，点一下插进输入框。 */
+.tray {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border-top: 0.5px solid var(--dsw-alias-border-l2);
+}
+
+.chips {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 6px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chip {
+  flex: none;
+  height: 26px;
+  padding: 0 9px;
+  font: inherit;
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--dsw-alias-state-business-primary);
+  background: transparent;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 13px;
+  cursor: pointer;
+}
+
+.chip:hover {
+  background: var(--dsw-alias-interactive-bg-hover-solid);
+}
+
+.empty {
+  flex: 1 1 auto;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 12px;
+}
+
+.ask {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 11px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--dsw-alias-bg-base);
+  background: var(--dsw-alias-state-business-primary);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.ask:hover {
+  filter: brightness(1.08);
+}
+
+.toast {
+  flex: 1 1 auto;
+  font-size: 12px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.chip:focus-visible,
+.ask:focus-visible,
+.iconButton:focus-visible,
+.select:focus-visible,
+.textButton:focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: 1px;
+}
+
+/*
+ * maid-atelier 皮肤兼容（0.1.8）：皮肤在手机竖屏把整页改成上下排列的 flex，右侧栏被挤成底部一条零高度的行，
+ * dsh 在窄屏自动全屏打开的面板于是看不见。这里让右侧栏叠在对话上面；面板收起时它不接收点击，不挡对话。
+ * 只在这个皮肤下生效；皮肤上游修好后删掉（https://github.com/Small-tailqwq/dsh-deep-whale/issues/208）。
+ */
+@media (width <= 700px) and (orientation: portrait) {
+  :global(body[data-dsh-maid-atelier] [class*='frame'] > [class*='rightbarCol']) {
+    position: absolute !important;
+    inset: 0 !important;
+    pointer-events: none;
+  }
+}

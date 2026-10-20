@@ -1,0 +1,69 @@
+{
+  "name": "dsh-plugin-humanitys-last-math-book",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness 教材答疑插件：@ 引用题号或页码精确取材，讲解中可以算、可以画图，右侧对照教材 PDF。",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.14.0",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./agent": "./lib/agent.js",
+    "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "!lib/**/*.map",
+    "art",
+    "prompts",
+    "manim",
+    "!manim/__pycache__",
+    "locale/*.json",
+    "icon.svg",
+    "cordis.patch.yml",
+    "NOTICE",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-tool",
+        "@deepseek-ai/dsh-client-ui-sidebar-right",
+        "@deepseek-ai/dsh-client-ui-input-trigger",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc -p .",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "4.0.5",
+    "@deepseek-ai/dsh-agent": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-llm": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-session": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-session-projection": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-system-prompt": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-tools": "0.2.1-rc.2",
+    "@deepseek-ai/schemastery": "3.18.5",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "lightningcss": "^1.33.0",
+    "pdfjs-dist": "6.4.299",
+    "react": "~19.2.9",
+    "tsdown": "0.22.14",
+    "typescript": "^5.9.3",
+    "vitest": "5.0.5",
+    "zod": "4.4.3"
+  }
+}

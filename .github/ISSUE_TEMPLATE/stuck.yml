@@ -1,0 +1,23 @@
+name: 卡点
+description: 某一步看不懂、跳得太快、例题之间跨度太大
+labels: ["卡点"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: 位置
+      description: 册号和章节号，例如「C.7 第 2 节」「P.11 例 6」
+    validations:
+      required: true
+  - type: textarea
+    id: step
+    attributes:
+      label: 卡在哪一步
+      description: 照抄卡住的那句话或那一步推导
+    validations:
+      required: true
+  - type: textarea
+    id: thought
+    attributes:
+      label: 你原来以为它是什么意思
+      description: 写下你读到这里时的理解，哪怕是错的；这最能帮我们改讲法

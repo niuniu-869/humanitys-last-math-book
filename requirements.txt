@@ -1,0 +1,5 @@
+# 验算（tools/verify_all.py）和重画配图（books/*/*/figs/*.py）需要；排 PDF 另需 pandoc 与 LuaLaTeX，见 README
+sympy>=1.12
+numpy>=1.26
+scipy>=1.11
+matplotlib>=3.8

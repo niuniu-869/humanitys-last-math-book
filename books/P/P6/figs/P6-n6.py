@@ -1,0 +1,17 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, ax = new_fig(12, 8)
+z = np.linspace(0, 1, 501)
+ax.plot(z, 3*z*z, color=C.INK, ls='-')
+ax.plot(z, 3*(1-z)**2, color=C.INK, ls='--')
+ax.axhline(1, color=C.INK, ls=':')
+ax.axvline(0.5, color=C.GRAY, ls=':', lw=0.9)
+label(ax, '最大值', (0.86, 3*0.86**2), (-12, 12), ha='right')
+label(ax, '最小值', (0.14, 3*0.86**2), (12, 12))
+label(ax, '单个变量', (0.14, 1), (0, 9))
+label(ax, '对称轴', (0.5, 2.85), (8, 0))
+ax.set(xlim=(0, 1), ylim=(0, 3.2), xlabel='$z$', ylabel='密度')
+ax.set_xticks([0, 0.5, 1])
+ax.set_yticks([0, 1, 2, 3])
+save(fig, 'P6-n6')

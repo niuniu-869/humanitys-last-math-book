@@ -1,0 +1,27 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, ax = new_fig(12, 11)
+x = np.linspace(-0.5, 3.5, 401)
+ax.fill([0, 1, 0], [-1, 0, 0], facecolor=C.PAPER, edgecolor=C.INK,
+        hatch='///', lw=0)
+ax.fill([1, 3, 3], [0, 0, 2], facecolor=C.LIGHT, edgecolor=C.INK, lw=0)
+ax.plot(x, x-1, color=C.INK, lw=2, ls='-')
+ax.plot([0, 0], [-1, 0], color=C.INK, lw=0.9, ls='--', zorder=4)
+ax.plot([3, 3], [0, 2], color=C.INK, lw=0.9, ls='--')
+ax.spines['left'].set_position('zero')
+ax.spines['bottom'].set_position('zero')
+ax.set(xlim=(-0.5, 3.5), ylim=(-1.5, 2.5), xlabel='$x$', ylabel='$y$')
+ax.xaxis.set_label_coords(1.02, 0.375)
+ax.yaxis.set_label_coords(0.10, 0.97)
+ax.set_aspect('equal')
+ax.set_xticks([2, 3])
+ax.set_yticks([-1, 1, 2])
+label(ax, '$0$', (0, 0), offset=(-10, 6))
+label(ax, r'$-\frac{1}{2}$', (0.62, -0.70), ha='center', va='center')
+label(ax, '$+2$', (2.45, 0.6), ha='center', va='center')
+dot(ax, (1, 0), '$x=1$', offset=(0, -20))
+label(ax, '$y=x-1$', (1.0, 1.7))
+assert 2*2/2 - 1*1/2 == 1.5
+fig.subplots_adjust(left=0.12, right=0.94, bottom=0.10, top=0.88)
+save(fig, "C9-n2")

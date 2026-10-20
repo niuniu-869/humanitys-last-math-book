@@ -1,0 +1,116 @@
+/* 讲解里的图（manim 图和动画）：正文的一部分，始终展开，宽度随对话栏，最宽 560px。 */
+
+.figure {
+  margin: 6px 0 14px;
+  max-width: 560px;
+  overflow: hidden;
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: var(--dsw-radius-lg, 10px);
+  /* 图和图注一起放在卡片层上，不用页面底色：皮肤可能把页面底色设成透明露出背景画，图会看不清；模糊再压一层半透明的卡片底。 */
+  background: var(--dsw-alias-bg-layer-1);
+  backdrop-filter: blur(16px);
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+/* manim 渲染好的图片或视频：黑底（与渲染背景一致，深浅色主题下都不变），填满画框。 */
+.screen {
+  background: #000;
+}
+
+.media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 还在画：同尺寸的占位，画好后不跳动。 */
+.pending::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, var(--dsw-alias-interactive-bg-hover-solid) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: sweep 1.4s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes sweep {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pending::after { animation: none; }
+}
+
+.caption {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 0 12px 8px;
+  font-size: var(--dsh-content-font-size-secondary, 13px);
+  line-height: 20px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.status {
+  color: var(--dsw-alias-label-tertiary);
+}
+
+/* manim 图的分步说明：视频播到哪一步，哪一步变成正文颜色并在左边加一道竖线；点一步跳到那里播放。 */
+.steps {
+  margin: -2px 0 0;
+  padding: 0 12px 10px 32px;
+  font-size: var(--dsh-content-font-size-secondary, 13px);
+  line-height: 20px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.steps li {
+  position: relative;
+  padding: 2px 0;
+}
+
+.steps li[data-current] {
+  color: var(--dsw-alias-label-primary);
+}
+
+.steps li[data-current]::before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--dsw-alias-state-business-primary);
+}
+
+/* 块级：按钮默认按 inline-block 排，换行后列表序号会对齐到它的最后一行 */
+.step {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+button.step {
+  cursor: pointer;
+}
+
+button.step:hover {
+  color: var(--dsw-alias-label-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

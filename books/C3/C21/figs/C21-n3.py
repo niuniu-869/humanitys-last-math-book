@@ -1,0 +1,32 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+from matplotlib.patches import FancyArrowPatch
+
+fig, ax = new_fig(12, 13)
+ax.set(xlim=(-.5, 2), ylim=(-.5, 2.5), aspect="equal")
+ax.set_xlabel("$x$", loc="right")
+ax.set_ylabel("$y$", loc="top", rotation=0)
+ax.axhline(0, color=C.GRAY, lw=.65)
+ax.axvline(0, color=C.GRAY, lw=.65)
+theta = np.linspace(0, 2*np.pi, 900)
+for c in (1, 2, 3, 4):
+    radius = np.sqrt(c)
+    ax.plot(radius*np.cos(theta), radius*np.sin(theta), color=C.TEAL, ls="--", lw=.9)
+    label(ax, f"$z={c}$", (-.25, np.sqrt(c-.25**2)), (0, 6), ha="center", fontsize=9)
+x = np.linspace(0, 1.5, 400)
+ax.plot(x, x*x, color=C.INK, lw=2.3, ls="-")
+p = np.array([.5, .25])
+q = np.array([.6, .36])
+dot(ax, p); dot(ax, q)
+label(ax, "$P$", p, (-12, -4), ha="right")
+label(ax, "$Q$", q, (-12, 6), ha="right")
+ax.plot([p[0], q[0]], [p[1], p[1]], color=C.INK, ls=":", lw=1.2)
+ax.plot([q[0], q[0]], [p[1], q[1]], color=C.INK, ls=":", lw=1.2)
+label(ax, r"$\Delta x=0.1$", ((p[0]+q[0])/2, p[1]), (14, -14), ha="center", fontsize=9)
+label(ax, r"$\Delta y=0.11$", (q[0], (p[1]+q[1])/2), (8, -3), fontsize=9)
+label(ax, r"$t=0.5$", p, (-34, -16), ha="right", fontsize=9)
+label(ax, r"$t=0.6$", q, (34, 6), fontsize=9)
+assert np.allclose([p[1], q[1]], [p[0]**2, q[0]**2])
+z=lambda a,b:a*a+b*b
+assert np.isclose(z(*q)-z(*p), .1771) and np.isclose(2*.5*.1+2*.25*.11, .155)
+save(fig, "C21-n3")

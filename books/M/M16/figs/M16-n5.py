@@ -1,0 +1,25 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, ax = new_fig(14, 8)
+x = np.linspace(-4, 6, 1000)
+pd = np.exp(-x**2 / 2) / np.sqrt(2 * np.pi)
+pg = np.exp(-((x - 2) / 1.5)**2 / 2) / (1.5 * np.sqrt(2 * np.pi))
+dstar = pd / (pd + pg)
+crossings = x[:-1][np.sign(pd[:-1] - pg[:-1]) != np.sign(pd[1:] - pg[1:])]
+cross = float(crossings[np.argmin(np.abs(crossings))])
+assert abs(float(np.interp(cross, x, pd) - np.interp(cross, x, pg))) < 0.002
+ax.plot(x, pd, color=C.INK, lw=2)
+ax.plot(x, pg, color=C.RED, ls='--', lw=1.7)
+ax.set(xlim=(-4, 6), ylim=(0, 0.48), xlabel='$x$', ylabel='密度')
+ax2 = ax.twinx()
+ax2.plot(x, dstar, color=C.TEAL, ls=':', lw=2)
+ax2.axhline(0.5, color=C.GRAY, lw=0.9)
+ax2.set_ylim(0, 1)
+ax.axvline(cross, ls=':', color=C.GRAY, lw=1.1)
+label(ax, '真图分布', (-1.6, 0.17), ha='right', color=C.INK)
+label(ax, '生成图分布', (3.4, 0.12), color=C.RED)
+label(ax2, '$D^*$（右轴）', (-3.0, float(np.interp(-3.0, x, dstar))), offset=(0, 8), ha='left', color=C.TEAL)
+label(ax2, f'相交处 $x\\approx{cross:.2f}$，$D^*=0.5$', (cross, 0.97), offset=(7, 0), ha='left')
+label(ax2, '$D^*=0.5$', (5.9, 0.5), offset=(0, 4), ha='right', color=C.GRAY)
+save(fig, 'M16-n5')

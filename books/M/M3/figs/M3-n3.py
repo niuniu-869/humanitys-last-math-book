@@ -1,0 +1,18 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+z = np.linspace(-3, 3, 1201)
+soft = np.sign(z)*np.maximum(np.abs(z)-1, 0)
+assert np.all(soft[np.abs(z) <= 1] == 0)
+fig, ax = new_fig(12, 11)
+ax.axvspan(-1, 1, color=C.LIGHT, alpha=0.55, zorder=0)
+ax.plot(z, z, color=C.GRAY, ls=':', label='$w=z$')
+ax.plot(z, soft, color=C.INK, ls='-', lw=2, label='软阈值')
+ax.plot(z, z/2, color=C.RED, ls='--', label='岭回归')
+label(ax, '恰好为 0', (0, -1.1), ha='center', fontsize=9)
+label(ax, r'$\lambda=1$', (-2.65, 2.5), fontsize=10)
+ax.set(xlim=(-3, 3), ylim=(-3, 3), xlabel='$z$', ylabel='$w^*$')
+ax.set_aspect('equal'); ax.set_xticks(range(-3, 4)); ax.set_yticks(range(-3, 4))
+ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.02), ncol=3, fontsize=9)
+fig.tight_layout()
+save(fig, "M3-n3")

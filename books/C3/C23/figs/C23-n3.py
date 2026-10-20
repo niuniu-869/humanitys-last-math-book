@@ -1,0 +1,23 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent))
+from _h3 import *
+V = View(-100, 25)
+fig, ax = setup(12, 9.5)
+P = np.array([1.0, -2.0, 1.0])
+ea = P/np.linalg.norm(P); eb = np.array([1.0, 0, -1])/np.sqrt(2); ec = np.array([1.0, 1, 1])/np.sqrt(3)
+assert abs(ea@eb) < 1e-9 and abs(eb@ec) < 1e-9 and abs(ea@ec) < 1e-9
+# 平面 G：x+y+z=0（含 ea、eb）；平面 F：球面在 P 的切平面（含 eb、ec）
+poly(ax, V, [P-1.8*ea-1.8*eb, P+1.8*ea-1.8*eb, P+1.8*ea+1.8*eb, P-1.8*ea+1.8*eb], fc="#BBBBBB", alpha=0.55, z=1)
+poly(ax, V, [P-1.8*ec-1.8*eb, P+1.8*ec-1.8*eb, P+1.8*ec+1.8*eb, P-1.8*ec+1.8*eb], fc="#FFFFFF", alpha=0.0, ls="--", z=2)
+r = np.sqrt(6); a = np.linspace(-0.8, 0.8, 100)
+line(ax, V, np.array([r*(np.cos(x)*ea+np.sin(x)*eb) for x in a]), lw=2.0, zorder=4)
+line(ax, V, [P-2.1*eb, P+2.1*eb], lw=2.2, ls="--", zorder=5)
+arrow3(ax, V, P, 1.7*ea, lw=1.6)
+arrow3(ax, V, P, 1.7*ec, lw=1.6, ls=":")
+dot3(ax, V, P, 40)
+text3(ax, V, P, "$P$", off=(6, -14), fontsize=13)
+text3(ax, V, P+1.7*ea, r"$\nabla F$", off=(4, 4), fontsize=13)
+text3(ax, V, P+1.7*ec, r"$\nabla G$", off=(4, 4), fontsize=13)
+text3(ax, V, P+2.1*eb, "切线", off=(6, -14), fontsize=12)
+text3(ax, V, P-1.8*ea-1.8*eb, "$G=0$ 的切平面", off=(-6, 8), fontsize=10)
+text3(ax, V, P+1.8*ec-1.8*eb, "$F=0$ 的切平面", off=(-30, -16), fontsize=10)
+save(fig, "C23-n3")

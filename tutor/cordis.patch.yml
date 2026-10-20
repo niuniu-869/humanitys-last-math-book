@@ -1,0 +1,75 @@
+# 教材答疑插件的 bundle 补丁，叠在 dsh-web-app 之后。
+#
+# 本机路径不写在这里：在 profile 的 cordis.patch.yml 里覆盖 hlmb-tutor 这一行的 config，例如
+#   - id: hlmb-tutor
+#     config:
+#       indexPath: /path/to/release/qa-index.json
+#       manimPython: /path/to/manim-env/bin/python   # 不写就没有画图工具
+- insert:
+    # 宿主端：教材取材服务、已附材料的会话投影、浏览器端路由（/api/hlmb/*，仅所有者可访问）。
+    - id: hlmb-tutor
+      name: dsh-plugin-humanitys-last-math-book
+      config:
+        indexPath: ''
+
+    # 答疑老师 preset：只有答疑规则、查教材、画图、计算和联网搜索，没有 shell 和文件读写。
+    - id: preset-hlmb-tutor
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: hlmb-tutor
+        name: 答疑老师
+        description: 按教材原文讲题，可以计算、画图、联网查资料。
+        order: 0
+        plugins:
+          - id: hlmb-tutor-agent
+            name: dsh-plugin-humanitys-last-math-book/agent
+          - id: compaction
+            name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+            config:
+              - id: compaction-basic
+                name: '@deepseek-ai/dsh-compaction-basic'
+
+# 新会话默认用答疑老师。
+- id: agent-preset-registry
+  name: '@deepseek-ai/dsh-agent-preset-registry'
+  config:
+    default: hlmb-tutor
+
+# 整轮回答一直展开：讲解中途的计算和图是正文的一部分，不能折进「Completed in Ns」。
+- id: ui-chat
+  name: '@deepseek-ai/dsh-client-ui-chat'
+  config:
+    transcriptView: verbose
+
+# 学生的 @ 只用来引用教材（题号、页码、单元），由本插件的「教材」补全源负责。
+# dsh 自带的 @文件 / @会话 引用会把 @L8-05 认成文件芯片，答疑场景也用不到工作区文件，这里关掉。
+- id: ui-reference
+  disabled: true
+
+# 会话标题由本插件起：有 @ 引用时用题号 + 考查点 / 单元名，没有引用时取消息的第一个分句。
+# 宿主只接受一个标题 provider，所以关掉默认的「首条消息交给模型总结」。
+- id: session-title-llm
+  disabled: true
+
+# 联网：放行宿主的 web_search / web_fetch（DeepSeek 原生搜索，复用已配置的 DeepSeek 凭据）。
+# dsh-web-app 默认关着这一行；答疑 agent 只会拿到这两个工具和本插件自己的工具。
+- id: tool-web
+  name: '@deepseek-ai/dsh-tool-web'
+  disabled: false
+  config:
+    fetch: true
+    searchTimeoutMs: 60000
+
+# 答疑 agent 没有读写文件和终端，权限预设（工作区内可写等）没有意义，输入框旁不显示这个开关。
+- id: ui-permission
+  disabled: true
+
+# 「本轮改了哪些文件」：答疑 agent 不写文件，用不上。而且它在每轮第一次调用工具前都要对工作区所在的
+# git 仓库做一次 `git add --all` 快照，工作区放在大仓库里时要等几十秒。界面上的交付物面板依赖它，一起关掉。
+- id: workspace-changes
+  disabled: true
+- id: ui-deliverables
+  disabled: true

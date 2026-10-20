@@ -1,0 +1,26 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+d = np.array([1] * 6 + [-1] * 2 + [0] * 32, dtype=float)
+rng = np.random.default_rng(2026)
+idx = rng.integers(0, 40, (10000, 40))
+boot = d[idx].mean(1)
+q025, q975 = np.quantile(boot, [0.025, 0.975])
+assert np.isclose(q025, -0.025) and np.isclose(q975, 0.225)
+fig, ax = new_fig(14, 8)
+bins = np.arange(-.175, .326, .025)
+counts, _, _ = ax.hist(boot, bins=bins, color=C.LIGHT, edgecolor=C.INK, linewidth=.8)
+hmax = float(counts.max())
+ax.set_ylim(0, hmax * 1.20)          # headroom for the two-line interval text above the tallest bar
+ax.axvline(.10, color=C.INK, ls='-', lw=1.5)
+ax.axvline(q025, color=C.GRAY, ls='--', lw=1.1)
+ax.axvline(q975, color=C.GRAY, ls='--', lw=1.1)
+ax.axvline(0, color=C.GRAY, ls=':', lw=1.1)
+label(ax, '观察值 0.10', (.10, hmax * .94), offset=(7, 0), ha='left', va='center')
+label(ax, '0', (0, hmax * .72), offset=(4, 0), ha='left', va='center')
+label(ax, '95% 区间\n$[-0.025,0.225]$', (.05, hmax * 1.185), ha='center', va='top',
+      linespacing=1.05)
+ax.set(xlim=(-.175, .325), xlabel='准确率差', ylabel='次数')
+ax.set_xticks([-.15, -.025, .1, .225, .3])
+fig.subplots_adjust(left=.12, right=.97, bottom=.16, top=.96)
+save(fig, 'P12-n6')

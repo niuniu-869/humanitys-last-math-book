@@ -1,0 +1,25 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+a = 1.0
+x = np.linspace(0, 3 * a, 500)
+step = np.where(x < a, 0.0, a)
+
+fig, ax = new_fig(13, 7.5)
+ax.fill_between(x[x < a], 0, x[x < a], color=C.LIGHT, zorder=1)
+ax.fill_between(x[x >= a], a, x[x >= a], color=C.LIGHT, zorder=1)
+ax.plot(x, x, color=C.INK, ls='-', lw=2.0, zorder=3)
+ax.plot([0, a], [0, 0], color=C.GRAY, ls='--', lw=2.4, zorder=3)
+ax.plot([a, 3 * a], [a, a], color=C.GRAY, ls='--', lw=2.4, zorder=3)
+ax.scatter([a], [0], s=46, facecolors=C.PAPER, edgecolors=C.INK, linewidths=1.4, zorder=5)
+ax.scatter([a], [a], s=46, color=C.INK, zorder=5)
+ax.set(xlim=(-0.08, 3.18), ylim=(-0.12, 3.35), xticks=[], yticks=[])
+ax.axhline(0, color=C.GRAY, lw=0.8)
+ax.axvline(0, color=C.GRAY, lw=0.8)
+label(ax, '$x$', (3.13, 0), offset=(0, -15), ha='right', va='top')
+label(ax, '$a$', (a, 0), offset=(0, -15), ha='center', va='top')
+label(ax, '$a$', (0, a), offset=(-12, 0), ha='right', va='center')
+label(ax, r'$x-a\mathbf{1}\{x\geq a\}\geq0$', (1.35, 1.35), ha='center', va='center')
+label(ax, r'阶梯：$a\cdot\mathbf{1}\{x\geq a\}$', (2.25, 1.0), offset=(0, 17), ha='center')
+label(ax, '直线：$y=x$', (2.45, 2.45), offset=(6, 7), ha='left')
+save(fig, 'P8-n1')

@@ -1,0 +1,30 @@
+name: 勘误
+description: 错字、公式错误、答案错误、说法不准确
+labels: ["勘误"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: 位置
+      description: 册号、章节号或题号，例如「P.7 第 3 节」「L7-09」「M.11 例 4」
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: PDF 版本
+      description: 看的是哪一版 PDF（Releases 里的版本号）；看的是仓库源文件就写「源文件」
+  - type: textarea
+    id: original
+    attributes:
+      label: 原文
+      description: 有问题的那句话或那个式子，照抄即可
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: 你认为正确的写法
+      description: 如果是计算错误，附上你的算法或验算代码更好
+    validations:
+      required: true

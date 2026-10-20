@@ -1,0 +1,25 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, axes = new_fig(17, 9, ncols=2)
+for ax in axes:
+    ax.fill([0, 0, 1], [0, 1, 1], facecolor=C.LIGHT, edgecolor=C.INK, lw=1.4)
+    ax.set(xlim=(-.24, 1.24), ylim=(-.18, 1.3), aspect='equal')
+    ax.set_axis_off()
+    arrow(ax, (-.12, 0), (1.33, 0), color=C.GRAY, lw=.8)
+    arrow(ax, (0, -.10), (0, 1.34), color=C.GRAY, lw=.8)
+    label(ax, '$x$', (1.19, 0), (0, -13)); label(ax, '$y$', (0, 1.23), (-14, 0))
+    label(ax, '$y=1$', (.58, 1), (0, 9))
+    label(ax, '$y=x$', (.80, .83), (10, 0))
+    label(ax, '$x=0$', (0, .62), (-10, 0), ha='right')
+    label(ax, '$0$', (0, 0), (-12, -13))
+    label(ax, '$1$', (1, 0), (0, -13))
+axes[0].annotate('', (.44, 1.22), (.44, .16), arrowprops=dict(arrowstyle='->', linestyle='--', color=C.INK))
+axes[1].annotate('', (1.05, .64), (-.20, .64), arrowprops=dict(arrowstyle='->', linestyle='--', color=C.INK))
+for ax, enter, leave in [(axes[0], (.44, .44), (.44, 1)), (axes[1], (0, .64), (.64, .64))]:
+    dot(ax, enter)
+    ax.scatter(*leave, s=28, facecolor=C.PAPER, edgecolor=C.INK, zorder=5)
+axes[0].text(.5, -.12, '进入：$y=x$\n离开：$y=1$', transform=axes[0].transAxes, ha='center', va='top', linespacing=1.6)
+axes[1].text(.5, -.12, '进入：$x=0$\n离开：$x=y$', transform=axes[1].transAxes, ha='center', va='top', linespacing=1.6)
+fig.subplots_adjust(bottom=.25, wspace=.35)
+save(fig, "C25-n4")

@@ -1,0 +1,20 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, ax = new_fig(12, 7.5)
+theta = np.linspace(3, 6, 400)
+ax.plot([0, 3], [0, 0], color=C.BLUE, ls='-', lw=1.6)
+ax.plot(theta, theta**-4, color=C.BLUE, ls='-', lw=1.6)
+ax.plot(3, 3**-4, marker='o', ms=6, color=C.INK, mec=C.INK)
+label(ax, r'$\hat\theta=3.0$（最大似然）', (3, 3**-4), offset=(7, 12))
+ax.axvline(2.5, color=C.GRAY, ls='--', lw=1.1)
+ax.plot(2.5, 0, marker='o', ms=6, mfc=C.PAPER, mec=C.INK, mew=1.2)
+label(ax, '矩估计 2.5，$L=0$', (2.5, 0), offset=(6, 20))
+for x in (0.5, 0.7, 0.8):
+    ax.plot([x, x], [0, 0.0018], color=C.GRAY, ls='-', lw=1.0)
+ax.plot([3, 3], [0, 0.0023], color=C.INK, ls='-', lw=1.0)
+ax.plot(3, 0.0018, marker='x', ms=7, mew=1.4, color=C.INK)
+label(ax, '数据 3.0 > 2.5', (3, 0.0018), offset=(10, -15))
+ax.set(xlim=(0, 6), ylim=(-0.001, 0.014), xlabel=r'$\theta$', ylabel=r'$L(\theta)$')
+ax.set_yticks([0, 0.005, 0.010])
+save(fig, "P11-n2")

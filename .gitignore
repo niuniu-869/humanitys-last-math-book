@@ -1,0 +1,11 @@
+# 构建产物：PDF 发布在 GitHub Releases，不进仓库
+books/*/_build/
+release/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+# 答疑插件：依赖和构建产物不进仓库，打好的 tgz 发布在 GitHub Releases
+tutor/node_modules/
+tutor/lib/
+tutor/*.tgz

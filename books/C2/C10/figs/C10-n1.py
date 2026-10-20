@@ -1,0 +1,27 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+x, h = 1.5, 0.3
+phi = lambda t: t**3 / 3
+assert np.allclose([phi(x), x*x, phi(x+h)-phi(x)], [1.125, 2.25, 0.819])
+fig, (a, b) = new_fig(18, 8, ncols=2)
+t = np.linspace(0, 2.2, 401)
+a.plot(t, t*t, color=C.INK, lw=2, ls='-')
+u = np.linspace(0, x, 201)
+a.fill_between(u, 0, u*u, color=C.LIGHT)
+v = np.linspace(x, x+h, 101)
+a.fill_between(v, 0, v*v, facecolor=C.PAPER, edgecolor=C.GRAY, hatch='////', lw=0.6)
+a.vlines(x, 0, x*x, color=C.INK, lw=1, ls='-')
+label(a, r'$\Phi(x)=\int_0^x f$', (1.03, 0.36), ha='center')
+label(a, r'宽 $h$，高约 $f(x)$', (1.22, 3.85), ha='center')
+a.set(title=r'$f(t)=t^2$', xlim=(0, 2.2), ylim=(0, 5), xlabel=r'$t$', ylabel=r'$y$')
+a.set_xticks([0, x, x+h, 2.2], ['0', r'$x$', r'$x+h$', '2.2'])
+b.plot(t, phi(t), color=C.INK, lw=2, ls='-')
+s = np.linspace(1.03, 2.06, 101)
+b.plot(s, phi(x)+x*x*(s-x), color=C.RED, lw=1.4, ls='--')
+dot(b, (x, phi(x)))
+label(b, r'斜率 $=f(x)=x^2=2.25$', (0.20, 2.85))
+b.set(title=r'$\Phi(x)=\frac{x^3}{3}$', xlim=(0, 2.2), ylim=(0, 3.8), xlabel=r'$x$', ylabel=r'$y$')
+b.set_xticks([0, 1.5, 2.2])
+fig.subplots_adjust(left=0.07, right=0.98, bottom=0.18, top=0.87, wspace=0.34)
+save(fig, "C10-n1")

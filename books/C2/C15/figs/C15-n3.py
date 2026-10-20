@@ -1,0 +1,23 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, ax = new_fig(12, 7.5)
+x = np.linspace(-0.995, 2, 1600)
+ax.plot(x, np.log1p(x), color=C.LIGHT, lw=4.0, ls="-")
+p3 = x - x**2 / 2 + x**3 / 3
+p6 = sum((-1)**(k + 1) * x**k / k for k in range(1, 7))
+ax.plot(x, p3, color=C.INK, lw=1.2, ls=":")
+ax.plot(x, p6, color=C.INK, lw=1.4, ls="--")
+ax.axvline(-1, color=C.INK, lw=0.9, ls=":")
+ax.axvline(1, color=C.INK, lw=0.9, ls=":")
+dot(ax, (1, np.log(2)), size=24)
+label(ax, r"$\ln(1+x)$", (0.28, 1.20), offset=(0, 0), ha="left", va="center")
+label(ax, "3 次", (1.6, 1.6 - 1.6**2 / 2 + 1.6**3 / 3), offset=(5, 5))
+label(ax, "6 次", (1.35, sum((-1)**(k + 1) * 1.35**k / k for k in range(1, 7))), offset=(5, -14))
+label(ax, "$x=-1$", (-1, 1.65), offset=(4, 0))
+label(ax, "$x=1$", (1, 1.65), offset=(4, 0))
+ax.set_xlim(-1, 2); ax.set_ylim(-3, 2)
+ax.set_xticks([-1, -0.5, 0, 0.5, 1, 1.5, 2])
+ax.set_yticks([-3, -2, -1, 0, 1, 2])
+ax.set_xlabel("$x$"); ax.set_ylabel("$y$")
+save(fig, "C15-n3")

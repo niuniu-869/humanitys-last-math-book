@@ -1,0 +1,29 @@
+dsh-plugin-humanitys-last-math-book — 第三方美术署名 / Third-party artwork notice
+==================================================================
+
+代码以 MIT 授权（见 LICENSE）。美术素材不在 MIT 范围内，单独说明如下。
+Code is MIT-licensed (see LICENSE). The artwork below is not covered by MIT.
+
+art/fish-avatar.webp（答疑老师「大肥鱼」头像）
+--------------------------------------------
+
+这是 DeepSeek 鲸鱼娘形象的演绎作品，按 CC BY-NC-SA 4.0 授权：
+署名必须保留下面完整的创作链；只能非商业使用；再演绎须以相同方式共享。
+A derivative of the DeepSeek whale-girl character, licensed CC BY-NC-SA 4.0:
+keep the full attribution chain below, non-commercial use only, share alike.
+
+1. 原作 (original character): 上善无形 —— 鲸鱼娘角色形象。
+   Bilibili UID 4456176; pixiv https://www.pixiv.net/users/62155430
+2. 二创 (DeepSeek redesign): ZipZipPipe —— 加入 DeepSeek 元素的鲸鱼娘设计。
+   Bilibili UID 4168597; pixiv https://www.pixiv.net/users/18604994
+   设定参考整理：https://github.com/Neko3000/deepseek-whalechan
+3. 本插件 (this plugin): 以上述形象为参考图做图生图，生成答疑老师插画
+   （2026-10），再裁切、缩放为 256px 头像。
+   Image-to-image generation with the above as reference (2026-10), then
+   cropped and scaled to a 256px avatar.
+
+美术版权归以上各作者所有，包括嵌入和变换后的副本。
+Artwork copyright remains with the respective authors above, including
+embedded and transformed copies.
+
+CC BY-NC-SA 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/

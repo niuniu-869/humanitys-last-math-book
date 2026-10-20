@@ -1,0 +1,23 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+fig, ax = new_fig(12, 12)
+ax.set(xlim=(-1.5, 3), ylim=(-1.5, 3), aspect="equal")
+ax.set_xlabel("$x$", loc="right")
+ax.set_ylabel("$y$", loc="top", rotation=0)
+ax.axhline(0, color=C.GRAY, lw=.65)
+ax.axvline(0, color=C.GRAY, lw=.65)
+t = np.exp(np.linspace(-9, 9, 6000))
+x, y = 3*t/(1+t**3), 3*t*t/(1+t**3)
+ax.plot(x, y, color=C.INK, ls="-", lw=1.8)
+ax.plot([-1.5, 3], [-1.5, 3], color=C.INK, ls="--", lw=1)
+label(ax, "$y=x$", (2.35, 2.65), ha="center")
+s = np.array([.85, 2.15])
+ax.plot(s, 3-s, color=C.INK, ls="-", lw=1.3)
+dot(ax, (1.5, 1.5))
+label(ax, r"$(\frac{3}{2},\frac{3}{2})$", (1.5, 1.5), (20, 7), fontsize=13)
+label(ax, r"斜率 $-1$", (2.15, .85), (5, -3))
+assert np.allclose(x**3+y**3, 3*x*y)
+assert np.isclose(2*1.5**3, 3*1.5**2)
+assert np.dot([1, 1], [1, -1]) == 0
+save(fig, "C21-n4")

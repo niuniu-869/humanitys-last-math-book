@@ -1,0 +1,25 @@
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[4] / "tools"))
+from figstyle import plt, np, C, new_fig, new_fig3d, save, arrow, dot, label
+
+def sigmoid(z):
+    return 1.0 / (1.0 + np.exp(-z))
+
+fig, ax = new_fig(12, 7.5)
+z = np.linspace(-6, 6, 600)
+p = sigmoid(z)
+ax.plot(z, p, color=C.INK, ls='-', label=r'$\sigma(z)$')
+ax.axhline(0.0, color=C.GRAY, ls=':', lw=1.0)
+ax.axhline(1.0, color=C.GRAY, ls=':', lw=1.0)
+ax.axhline(0.5, color=C.GRAY, ls='--', lw=1.0)
+zt = np.linspace(-1.7, 1.7, 80)
+ax.plot(zt, 0.5 + 0.25 * zt, color=C.GRAY, ls='--', lw=1.1)
+ax.scatter([0], [0.5], s=42, facecolors=C.PAPER, edgecolors=C.INK, linewidths=1.2, zorder=5)
+p5 = sigmoid(-5)
+ax.scatter([-5], [p5], s=30, facecolors=C.PAPER, edgecolors=C.INK, linewidths=1.0, zorder=5)
+label(ax, '$p=0.5$', (0, 0.5), offset=(7, 7))
+label(ax, r'$\mathrm{slope}=1/4$', (0.95, 0.74), offset=(4, 2), color=C.GRAY)
+label(ax, r'$z=-5,\ p\approx0.0067$', (-5, p5), offset=(5, 8), fontsize=8.5)
+label(ax, '$p=1$', (5.2, 1), offset=(0, 6), color=C.GRAY)
+label(ax, '$p=0$', (5.2, 0), offset=(0, -13), color=C.GRAY)
+ax.set(xlim=(-6, 6), ylim=(-0.1, 1.1), xlabel='$z$', ylabel='$p$')
+save(fig, 'M2-n1')
