@@ -5,6 +5,7 @@
     python tools/build.py all                # 全部分册，按书序逐册排
     python tools/build.py P --units P1,P2    # 只排其中几章（试排用）
     python tools/build.py P --tex-only       # 只生成 LaTeX 源 books/P/_build/P.tex，不编译
+    python tools/build.py all --check        # 只检查章标题和引号，不排版（不需要 pandoc 和 LaTeX）
 
 依赖：
 - pandoc ≥ 3.0；
@@ -21,6 +22,7 @@ import os
 import re
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
 
 NAME = "人类最后一本数理基础书"  # 书名，印在封面上（页眉印的是册名）
@@ -96,6 +98,71 @@ def to_latex(md: str) -> str:
          "-t", "latex", "--wrap=preserve", "--columns=60", "--no-highlight"],
         input=md, capture_output=True, text=True, check=True,
     ).stdout
+
+
+# 书签（PDF 阅读器里的目录）只能放纯文字。pandoc 把标题里公式的 TeX 源码原样当书签文字，
+# 书签里就出现 \sigma、x\to0；引号也留成 `` ''。下面由标题的排版内容重写书签文字
+MATH_SYMBOLS = {"infty": "∞", "to": "→", "cdot": "·", "times": "×", "sqrt": "√", "le": "≤", "ge": "≥",
+                "ne": "≠", "approx": "≈", "in": "∈", "pm": "±", "partial": "∂", "nabla": "∇", "ldots": "…"}
+MATH_DROP = {"mathrm", "mathbf", "mathsf", "mathit", "boldsymbol", "operatorname", "text", "left", "right"}
+SUPER = dict(zip("0123456789+-=()nixkpdT*", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁿⁱˣᵏᵖᵈᵀ*"))
+SUB = dict(zip("0123456789+-=()aeiknt", "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑᵢₖₙₜ"))
+
+
+def math_text(t: str) -> str:
+    """公式 → 纯文字：希腊字母和常用符号换成 Unicode，上下标尽量用上下标字符。"""
+    def command(m: re.Match) -> str:
+        name = m[1]
+        if name in MATH_DROP:
+            return ""
+        if name in MATH_SYMBOLS:
+            return MATH_SYMBOLS[name]
+        letter = name.removeprefix("var").upper().replace("LAMBDA", "LAMDA")  # Unicode 里拼作 LAMDA
+        try:
+            return unicodedata.lookup(f"GREEK {'CAPITAL' if name[0].isupper() else 'SMALL'} LETTER {letter}")
+        except KeyError:
+            return name + m[2]  # sin、log 等函数名，保留后面的空格
+
+    def script(m: re.Match) -> str:
+        table, s = (SUPER if m[1] == "^" else SUB), m[2].strip("{}")
+        if all(c in table or c in table.values() for c in s):
+            return "".join(table.get(c, c) for c in s)
+        return ("\0" if m[1] == "^" else "\1") + (s if len(s) == 1 else f"({s})")  # 没有对应字符：写成 ^∞、^(ab)
+
+    t = re.sub(r"\\[,;:! ]", " ", t).replace("'", "′")
+    t = re.sub(r"\\([A-Za-z]+)(\s*)", command, t)
+    for _ in range(4):  # 由内向外：e^{-x^2} 先换 x^2，再换外层
+        t = re.sub(r"([\^_])(\{[^{}^_]*\}|[^{}\s^_])", script, t)
+    t = re.sub(r"[{}\\]", "", t).replace("\0", "^").replace("\1", "_")
+    return re.sub(r"[#$%&_^~]", lambda m: {"^": r"\textasciicircum{}", "~": r"\textasciitilde{}"}.get(m[0], "\\" + m[0]), t)
+
+
+def _close(s: str, i: int) -> int:
+    """s[i] 是「{」，返回与它配对的「}」之后的位置。"""
+    depth = 0
+    for j in range(i, len(s)):
+        if s[j] in "{}" and s[j - 1] != "\\":
+            depth += 1 if s[j] == "{" else -1
+            if not depth:
+                return j + 1
+    raise ValueError(s)
+
+
+def bookmarks(tex: str) -> str:
+    """给带公式或引号的标题配上纯文字书签：\\texorpdfstring{排版内容}{书签文字}。"""
+    out = []
+    for line in tex.split("\n"):
+        m = re.match(r"\\(?:sub){0,2}section\{", line)
+        if m:
+            end = _close(line, m.end() - 1)
+            body = line[m.end():end - 1]
+            if body.startswith(r"\texorpdfstring{"):
+                body = body[16:_close(body, 15) - 1]
+            text = re.sub(r"\\\((.+?)\\\)", lambda g: math_text(g[1]), body).replace("``", "“").replace("''", "”")
+            if text != body:
+                line = line[:m.end()] + rf"\texorpdfstring{{{body}}}{{{text}}}" + line[end - 1:]
+        out.append(line)
+    return "\n".join(out)
 
 
 PREAMBLE = r"""
@@ -217,22 +284,46 @@ def cover(book: str, title: str, units: list[str]) -> str:
 """
 
 
-PARTS = (  # 文件名、部分名、副标题；答案部分用小一号字
-    ("cheatsheet.md", "速记表", "遮住右栏自测", ""),
-    ("lesson.md", "讲义", "问题 · 直觉 · 方法 · 例题", ""),
-    ("problems.md", "练习题", "A 基础 · B 进阶 · C 提高", ""),
-    ("answers.md", "答案", "做完再对照", r"\small"),
+PARTS = (  # 文件名、部分名、副标题、字号（答案部分用小一号字）、章标题后缀
+    ("cheatsheet.md", "速记表", "遮住右栏自测", "", "（速记）"),
+    ("lesson.md", "讲义", "问题 · 直觉 · 方法 · 例题", "", ""),
+    ("problems.md", "练习题", "A 基础 · B 进阶 · C 提高", "", "（题目）"),
+    ("answers.md", "答案", "做完再对照", r"\small", "（答案）"),
 )
+
+
+def check(book: str) -> list[str]:
+    """排版前检查。各部分靠每章文件开头的「## 章号 · 章名」分章、生成书签，漏写了不报错，
+    这一章只会悄悄并进上一章、从书签里消失；直引号会被 pandoc 排成两个右引号「”变”」。"""
+    o = json.loads((BOOKS / book / "outline.json").read_text(encoding="utf-8"))
+    errs = []
+    for u in o["units"]:
+        for name, *_, suffix in PARTS:
+            p = BOOKS / book / u["code"] / name
+            if not p.exists():
+                continue
+            md = p.read_text(encoding="utf-8")
+            first = md.lstrip().split("\n", 1)[0]
+            m = re.fullmatch(r"## ([A-Z]{1,4}\d?)\.(\d{1,2}) · (.+)", first)  # 章号写法同 qa_index.py
+            if not (m and m[1] + m[2] == u["code"] and m[3] == u["title"] + suffix):
+                errs.append(f"{p.relative_to(ROOT)}：第一行应为「## 章号 · {u['title']}{suffix}」，现在是「{first[:40]}」")
+            fence = False
+            for i, line in enumerate(md.splitlines(), 1):
+                if line.lstrip().startswith("```"):
+                    fence = not fence
+                elif not fence and '"' in "".join(line.split("`")[::2]):
+                    errs.append(f"{p.relative_to(ROOT)}:{i}：直引号 \" 改成“”或「」")
+    return errs
 
 
 def book_tex(book: str, only: list[str] | None = None) -> str:
     o = json.loads((BOOKS / book / "outline.json").read_text(encoding="utf-8"))
     units = [u["code"] for u in o["units"] if not only or u["code"] in only]
     body = []
-    for name, label, sub, size in PARTS:
+    for name, label, sub, size, _ in PARTS:
         md = "".join(unit_md(book, u, name) for u in units)
         if md.strip():
-            body.append(rf"\newpart{{{label}}}{{{sub}}}{size}" + "\n" + to_latex(clean(md)))
+            body.append(rf"\newpart{{{label}}}{{{sub}}}{size}" + "\n" + bookmarks(to_latex(clean(md))))
     head = fonts(PREAMBLE.replace(r"\BOOKTITLE", f"{book} · {o['title']}"))
     return head + "\n\\begin{document}\n" + cover(book, o["title"], units) + "\n".join(body) + "\n\\end{document}\n"
 
@@ -252,7 +343,12 @@ def compile_tex(tex: str, bdir: Path, name: str) -> Path | None:
     return bdir / f"{name}.pdf"
 
 
-def build(book: str, only: list[str] | None = None, tex_only: bool = False) -> bool:
+def build(book: str, only: list[str] | None = None, tex_only: bool = False, check_only: bool = False) -> bool:
+    errs = check(book)
+    for e in errs:
+        print(f"[{book}] {e}")
+    if errs or check_only:
+        return not errs
     tex = book_tex(book, only)
     bdir = BOOKS / book / "_build"
     if tex_only:
@@ -275,9 +371,10 @@ def main() -> None:
     ap.add_argument("book", help="册号（" + "、".join(ORDER) + "）或 all")
     ap.add_argument("--units", help="只排这些章，逗号分隔，例如 P1,P2")
     ap.add_argument("--tex-only", action="store_true", help="只生成 LaTeX 源，不编译")
+    ap.add_argument("--check", action="store_true", help="只检查章标题和引号，不排版")
     a = ap.parse_args()
     books = ORDER if a.book == "all" else [a.book]
-    ok = [build(b, a.units and a.units.split(","), a.tex_only) for b in books]
+    ok = [build(b, a.units and a.units.split(","), a.tex_only, a.check) for b in books]
     sys.exit(0 if all(ok) else 1)
 
 

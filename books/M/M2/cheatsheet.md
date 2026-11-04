@@ -1,3 +1,5 @@
+## M.2 · 线性回归与二分类：逻辑回归、交叉熵的梯度 p−y（速记）
+
 | 提示 | 内容 |
 |---|---|
 | 高斯噪声的最大似然 | $y=\boldsymbol w^{\mathsf T}\boldsymbol x+\varepsilon$，$\varepsilon\sim N(0,\sigma^2)$ $\Rightarrow$ 对数似然 $=-\frac n2\ln(2\pi\sigma^2)-\frac1{2\sigma^2}\sum(\hat y_i-y_i)^2$，最大化它就是最小二乘；$\hat\sigma^2=$ 均方误差 |

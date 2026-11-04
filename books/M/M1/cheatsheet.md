@@ -1,3 +1,5 @@
+## M.1 · 优化：梯度下降、学习率与收敛、凸性、动量、Adam（速记）
+
 | 提示 | 内容 |
 |---|---|
 | 训练要解的问题 | $L(\theta)=\frac1n\sum_i\ell(f_\theta(\boldsymbol x_i),y_i)$，$\theta^*=\arg\min L$；三件套：模型、损失、更新规则 |

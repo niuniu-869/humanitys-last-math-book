@@ -1,3 +1,5 @@
+## C.25 · 二重积分（速记）
+
 | 提示 | 内容 |
 |---|---|
 | 定义 | $\iint_Df\,\mathrm d\sigma=\lim\sum f(\xi_i,\eta_i)\Delta\sigma_i$：分割、近似、求和、取极限；$f\ge0$ 时是曲顶柱体体积，$f\equiv1$ 时是面积 $\sigma$；边界分段光滑的有界闭区域上连续则可积 |

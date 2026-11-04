@@ -1,3 +1,5 @@
+## L.15 · 奇异值分解（速记）
+
 | 提示 | 内容 |
 |---|---|
 | SVD 的样子 | $A=U\Sigma V^{\mathsf T}$：$A\boldsymbol v_i=\sigma_i\boldsymbol u_i$，$U$、$V$ 正交，$\Sigma$ 与 $A$ 同形状，对角线 $\sigma_1\ge\sigma_2\ge\cdots\ge0$ |
