@@ -1,4 +1,4 @@
-# 每次推送和 PR：跑全书验算（任何一项 FAIL 就失败），并检查答疑插件能否通过测试和构建
+# 每次推送和 PR：检查各章标题和引号，跑全书验算（任何一项 FAIL 就失败），并检查答疑插件能否通过测试和构建
 name: verify
 
 on:
@@ -16,6 +16,7 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+      - run: python tools/build.py all --check  # 章标题缺失或写错时，这一章会从 PDF 书签里消失
       - run: pip install -r requirements.txt
       - run: python tools/verify_all.py
 
